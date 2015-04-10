@@ -128,15 +128,21 @@ namespace ClipBoards.ViewModels
 
         private void LoadSettings()
         {
+            ClipItems = new ObservableCollection<ClipItem>();
+
             if (File.Exists(saveFileName))
             {
-                using (var sr = new StreamReader(saveFileName))
+                try
                 {
-                    XmlSerializer xml = new XmlSerializer(typeof(List<ClipItem>));
-                    var list = xml.Deserialize(sr) as List<ClipItem>;
+                    using (var sr = new StreamReader(saveFileName))
+                    {
+                        XmlSerializer xml = new XmlSerializer(typeof(List<ClipItem>));
+                        var list = xml.Deserialize(sr) as List<ClipItem>;
 
-                    ClipItems = new ObservableCollection<ClipItem>(list);
+                        ClipItems = new ObservableCollection<ClipItem>(list);
+                    }
                 }
+                catch { }
             }
         }
 
